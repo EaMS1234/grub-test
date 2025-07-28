@@ -9,6 +9,15 @@ main.o:
 build: header.o main.o
 	gcc -m32 -T entry.ld -o kernel.bin -ffreestanding -O2 -nostdlib header.o main.o -lgcc
 
+build-iso: build
+	mkdir out
+	mkdir out/boot
+	mkdir out/boot/grub
+	cp grub.cfg out/boot/grub/
+	cp kernel.bin out/boot/
+	grub-mkrescue -o hello_world.iso out
+	rm -r out
+
 clean: build
 	rm *.o
 
